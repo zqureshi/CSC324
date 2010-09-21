@@ -14,3 +14,9 @@ def isSubsequence(l1, l2):
     return isSubsequence(rest(l1), rest(l2))
   else:
     return isSubsequence(l1, rest(l2))
+
+def map(l, fn):
+  if(l == None):
+    return
+  else:
+    return cons(fn(first(l)), map(rest(l), fn))
