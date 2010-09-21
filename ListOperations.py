@@ -20,3 +20,6 @@ def map(l, fn):
     return
   else:
     return cons(fn(first(l)), map(rest(l), fn))
+
+def consAll(obj, l):
+  return map(l, lambda x: cons(obj, x))
