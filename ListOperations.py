@@ -2,3 +2,15 @@
 #
 # Zeeshan Qureshi
 # zeeshan.qureshi@utoronto.ca
+
+from List import *
+
+def isSubsequence(l1, l2):
+  if (l1 == None):
+    return True
+  elif (l2 == None):
+    return False
+  elif (first(l1) == first(l2)):
+    return isSubsequence(rest(l1), rest(l2))
+  else:
+    return isSubsequence(l1, rest(l2))
