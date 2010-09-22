@@ -40,3 +40,10 @@ class append:
       return l2
     else:
       return cons(first(l1), self.call(rest(l1), l2))
+
+class subsequences:
+  def call(self, l):
+    if(l == None):
+      return cons(None, None)
+    else:
+      return append().call(self.call(rest(l)), consAll().call(first(l), self.call(rest(l))))
