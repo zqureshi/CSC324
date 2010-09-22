@@ -5,21 +5,31 @@
 
 from List import *
 
-def isSubsequence(l1, l2):
-  if (l1 == None):
-    return True
-  elif (l2 == None):
-    return False
-  elif (first(l1) == first(l2)):
-    return isSubsequence(rest(l1), rest(l2))
-  else:
-    return isSubsequence(l1, rest(l2))
+class isSubsequence:
+  def call(self, l1, l2):
+    if (l1 == None):
+      return True
+    elif (l2 == None):
+      return False
+    elif (first(l1) == first(l2)):
+      return self.call(rest(l1), rest(l2))
+    else:
+      return self.call(l1, rest(l2))
 
-def map(l, fn):
-  if(l == None):
-    return
-  else:
-    return cons(fn(first(l)), map(rest(l), fn))
+class map:
+  def call(self, fn, l):
+    if(l == None):
+      return
+    else:
+      return cons(fn(first(l)), self.call(fn, rest(l)))
 
-def consAll(obj, l):
-  return map(l, lambda x: cons(obj, x))
+class Conser:
+  def __init__(self, obj):
+    self.obj = obj
+
+  def call(self, l):
+    return cons(self.obj, l)
+
+class consAll:
+  def call(self, obj, l):
+    return map().call(Conser(obj).call, l)
