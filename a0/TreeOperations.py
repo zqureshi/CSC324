@@ -14,4 +14,12 @@ def treeToNestedLists(t):
   if (t.left == None and t.right == None):
     return cons(t.label, None)
   else:
-    return cons(t.label, cons(treeToNestedLists(t.left), cons(treeToNestedLists(t.right), None)))
+    return cons(t.label, 
+        cons(treeToNestedLists(t.left), 
+          cons(treeToNestedLists(t.right), None)))
+
+def treeToString(t):
+  if(t.left == None and t.right == None):
+    return t.label
+  else:
+    return t.label + '(' + treeToString(t.left) + ',' + treeToString(t.right) + ')'
