@@ -18,7 +18,7 @@ class isSubsequence:
 
 class map:
   def call(self, fn, l):
-    if(l == None):
+    if (l == None):
       return
     else:
       return cons(fn(first(l)), self.call(fn, rest(l)))
@@ -33,3 +33,10 @@ class Conser:
 class consAll:
   def call(self, obj, l):
     return map().call(Conser(obj).call, l)
+
+class append:
+  def call(self, l1, l2):
+    if (l1 == None):
+      return l2
+    else:
+      return cons(first(l1), self.call(rest(l1), l2))
