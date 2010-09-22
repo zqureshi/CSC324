@@ -21,7 +21,7 @@ class map:
     if (l == None):
       return
     else:
-      return cons(fn(first(l)), self.call(fn, rest(l)))
+      return cons(fn.call(first(l)), self.call(fn, rest(l)))
 
 class Conser:
   def __init__(self, obj):
@@ -32,7 +32,7 @@ class Conser:
 
 class consAll:
   def call(self, obj, l):
-    return map().call(Conser(obj).call, l)
+    return map().call(Conser(obj), l)
 
 class append:
   def call(self, l1, l2):
