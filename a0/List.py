@@ -9,16 +9,23 @@ class List:
     self.__rest = rest
 
   def __str__(self):
-    if(rest(self) == None):
-      if(first(self) == None):
-        return '(())'
-      else:
-        return '(' + str(first(self)) + ')'
-    else:
-      if(first(self) == None):
-        return '((), ' + str(rest(self)) + ')'
-      else:
-        return '(' + str(first(self)) + ', ' + str(rest(self)) + ')'
+    return printList(self, True)
+
+def printList(l, new=False):
+  if (first(l) == None):
+    result =  '()'
+  elif (first(l) is List):
+    result = printList(first(l), True)
+  else:
+    result = str(first(l))
+
+  if (rest(l) != None):
+    result += ', ' + printList(rest(l))
+
+  if (new == True):
+    return '(' + result + ')'
+  else:
+    return result
 
 # Precondition: rest is a List or None.
 def cons(first, rest): return List(first, rest)
