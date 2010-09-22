@@ -10,9 +10,15 @@ class List:
 
   def __str__(self):
     if(rest(self) == None):
-      return '(' + str(first(self)) + ')'
+      if(first(self) == None):
+        return '(())'
+      else:
+        return '(' + str(first(self)) + ')'
     else:
-      return '(' + str(first(self)) + ', ' + str(rest(self)) + ')'
+      if(first(self) == None):
+        return '((), ' + str(rest(self)) + ')'
+      else:
+        return '(' + str(first(self)) + ', ' + str(rest(self)) + ')'
 
 # Precondition: rest is a List or None.
 def cons(first, rest): return List(first, rest)
