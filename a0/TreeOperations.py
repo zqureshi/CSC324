@@ -9,3 +9,9 @@ from ListOperations import *
 
 # Import all Tree function
 from Tree import *
+
+def treeToNestedLists(t):
+  if (t.left == None and t.right == None):
+    return cons(t.label, None)
+  else:
+    return cons(t.label, cons(treeToNestedLists(t.left), cons(treeToNestedLists(t.right), None)))
