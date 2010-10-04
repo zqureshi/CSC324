@@ -11,3 +11,8 @@
   (unless (empty? l)
     (set-box! len (+ (unbox len) 1))
     (length-tail (rest l) len)))
+
+(define (reverse-tail l r)
+  (unless (empty? l)
+    (set-box! r (cons (first l) (unbox r)))
+    (reverse-tail (rest l) r)))
