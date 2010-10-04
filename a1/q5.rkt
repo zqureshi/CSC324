@@ -16,3 +16,10 @@
   (unless (empty? l)
     (set-box! r (cons (first l) (unbox r)))
     (reverse-tail (rest l) r)))
+
+(define (running-sum-primitive l n)
+  (if (empty? l)
+      (set-box! n '())
+      (let ([res (box '())])  ; declare variable to store result of recursive call
+        (running-sum-primitive (rest l) res)
+        (set-box! n (map (lambda (x) (+ x (first l))) (cons 0 (unbox res)))))))
