@@ -60,17 +60,15 @@
     (cond [(empty? l) empty]
           [(empty? (rest l)) (list (list (first l)))]
           [else (cons (list (first l) (first (rest l)))
-                 (pair-up-from-front (rest (rest l))))])))
+                      (pair-up-from-front (rest (rest l))))])))
 
 (define pair-up-from-back
   (lambda (l)
-    (combine
-     (λ (e res)
-       (cond [(empty? res) (cons (list e) res)]
-             [(empty? (rest (first res))) (cons (cons e (first res)) (rest res))]
-             [else (cons (list e) res)]))
-     '()
-     l)))
+    (combine (λ (e res)
+               (cond [(empty? res) (cons (list e) res)]
+                     [(empty? (rest (first res))) (cons (cons e (first res)) (rest res))]
+                     [else (cons (list e) res)]))
+             '() l)))
 
 
 #| (b) Write combine-in-out that takes:
@@ -95,13 +93,9 @@
 (define (combine-in-out acc elt&acc-combiner acc->return elt&return-combiner l)
   (if (empty? l) (acc->return acc)
       (elt&return-combiner 
-        (first l)
-        (combine-in-out 
-          (elt&acc-combiner (first l) acc)
-          elt&acc-combiner
-          acc->return
-          elt&return-combiner
-          (rest l)))))
+       (first l)
+       (combine-in-out (elt&acc-combiner (first l) acc) elt&acc-combiner acc->return
+                       elt&return-combiner (rest l)))))
 
 #| (c) Use combine-in-out to redo A1-Q5(d), without boxes,
         just returning the result list. |#
@@ -109,10 +103,7 @@
 (define running-sum
   (lambda (l)
     (rest 
-     (combine-in-out 
-      0 
-      +
-      list
-      (λ (e res)
-        (cons (- (first res) e) res))
-      l))))
+     (combine-in-out 0 + list
+                     (λ (e res) 
+                       (cons (- (first res) e) res))
+                     l))))
