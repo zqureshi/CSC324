@@ -3,7 +3,7 @@
 (provide pair-up-from-front
          pair-up-from-back
          combine
-         #;combine-in-out
+         combine-in-out
          running-sum)
 
 #| Q3. [~30% of assignment]
@@ -92,11 +92,27 @@
  
   Also, uncomment it in the provide above. |#
 
-
+(define (combine-in-out acc elt&acc-combiner acc->return elt&return-combiner l)
+  (if (empty? l) (acc->return acc)
+      (elt&return-combiner 
+        (first l)
+        (combine-in-out 
+          (elt&acc-combiner (first l) acc)
+          elt&acc-combiner
+          acc->return
+          elt&return-combiner
+          (rest l)))))
 
 #| (c) Use combine-in-out to redo A1-Q5(d), without boxes,
         just returning the result list. |#
 
 (define running-sum
-  (lambda (_)
-    _))
+  (lambda (l)
+    (rest 
+     (combine-in-out 
+      0 
+      +
+      list
+      (λ (e res)
+        (cons (- (first res) e) res))
+      l))))
