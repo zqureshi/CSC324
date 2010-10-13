@@ -3,9 +3,13 @@
 (provide caching fibonacci)
 
 (define (fibonacci x)
-  (cond [(x . <= . 1) x]
-        [else (+ (fibonacci (- x 1)) (fibonacci (- x 2)))]))
+  (if (x . <= . 1) x
+      (+ (fibonacci (- x 1)) (fibonacci (- x 2)))))
 
-(define caching 
-  (λ (func . args)
-    func))
+(define (caching func)
+  (define ht (make-hash))
+  (λ args
+    (if (hash-ref ht args #f) (hash-ref ht args)
+        (let ([val (apply func args)])
+          (hash-set! ht args val)
+          val))))
