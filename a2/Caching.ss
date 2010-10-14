@@ -13,3 +13,7 @@
         (let ([val (apply func args)])
           (hash-set! ht args val)
           val))))
+
+; The caching version of fibonacci
+(define fib-caching 
+    (caching fibonacci))
