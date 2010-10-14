@@ -1,4 +1,4 @@
-#lang scheme ; you may change to racket, shouldn't matter.
+#lang racket ; you may change to racket, shouldn't matter.
 
 (provide pair-up-from-front
          pair-up-from-back
