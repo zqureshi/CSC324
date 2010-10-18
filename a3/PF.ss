@@ -117,8 +117,29 @@
     sexp-prepare-reconstruct.
  
    Use only-if and fix-1st *sensibly* (at least) once in (c). |#
-#;
+
 (provide sexp-prepare-reconstruct normalizeA)
+
+(define (sexp-prepare-reconstruct func sexp)
+  (let ([res (func sexp)])
+    (if (list? res)
+        (map (fix-1st sexp-prepare-reconstruct func) res)
+        res)))
+
+#| (sexp-prepare-reconstruct (λ (x) (if (list? x) x (sqr x))) '(1 2 3 (4 5 (6 7) 8) 9))
+=> '(1 4 9 (16 25 (36 49) 64) 81) |#
+
+(define (normalizeA sexp)
+  (sexp-prepare-reconstruct 
+   (λ (pf) 
+     (match pf
+       [`(not (not ,x)) x]
+       [`(not (,x ,and/or ,y)) `((not ,x)
+                                 ,(if (equal? and/or 'and) 'or 'and)
+                                 (not ,y))]
+       [`(,x ,and/or ,y) `(,x ,and/or ,y)]
+       [sym sym]))
+   sexp))
 
 #| (d) [15 min]
 
