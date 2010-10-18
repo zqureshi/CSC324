@@ -121,10 +121,14 @@
 (provide sexp-prepare-reconstruct normalizeA)
 
 (define (sexp-prepare-reconstruct func sexp)
-  (let ([res (func sexp)])
-    (if (list? res)
-        (map (fix-1st sexp-prepare-reconstruct func) res)
-        res)))
+  ((only-if list? 
+     (fix-1st map (fix-1st sexp-prepare-reconstruct func)))
+   (func sexp)))
+
+#| More verbose form
+(let ([res (func sexp)]
+      [if-list (only-if list? (fix-1st map (fix-1st sexp-prepare-reconstruct func)))])
+  (if-list res)) |#
 
 #| (sexp-prepare-reconstruct (λ (x) (if (list? x) x (sqr x))) '(1 2 3 (4 5 (6 7) 8) 9))
 => '(1 4 9 (16 25 (36 49) 64) 81) |#
