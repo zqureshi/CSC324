@@ -85,8 +85,19 @@
     takes any function and returns a newly created function behaving
     like the original (like caching, but no caching :)#, and not
     restricted to unary functions). |#
-#;
+
 (provide only-if fix-1st)
+
+(define (only-if pred func)
+  (λ (e)
+    (if (pred e) (func e)
+        e)))
+
+;(map (only-if even? sqr) '(1 2 3 4 5)) => '(1 4 3 16 5)
+
+(define (fix-1st func val)
+  (λ args
+    (apply func val args)))
 
 #| (c) [30 min]
 
