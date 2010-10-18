@@ -53,6 +53,9 @@
 #;
 (provide mark)
 
+(define (mark sym)
+  `,(string-append (symbol->string sym) (number->string (counter))))
+
 
 #| (c) [10 min]
    Write first-such-that, taking a unary predicate and list, returning the first
