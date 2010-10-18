@@ -1,4 +1,4 @@
-#lang scheme
+#lang racket
 
 #| Q1 [2.5 hours] Tree Recursion, Higher Order Functions.
    (The algorithms are all at 148 level, but the HOFs let you see/make
@@ -46,8 +46,17 @@
     no other information needs to be passed recursively to normalize.
    
    There is also reconstruction work on the way back. |#
-#;
+
 (provide normalize)
+
+(define (normalize pf)
+  (match pf
+    [`(not (not ,x)) (normalize x)]
+    [`(not (,x ,and/or ,y)) `(,(normalize `(not ,x))
+                              ,(if (equal? and/or 'and) 'or 'and)
+                              ,(normalize `(not ,y)))]
+    [`(,x ,and/or ,y) `(,(normalize x) ,and/or ,(normalize y))]
+    [sym sym]))
 
 #| (b) [30 min]
 
@@ -105,6 +114,7 @@
   Write sexp-combine taking a combiner and an sexp, primitively recursing,
    using the combiner on the leaves, and on the lists of results. |#
 
+#;
 (provide sexp-combine)
 
 #| (e) [45 min]
