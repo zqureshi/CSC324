@@ -27,11 +27,11 @@
 (provide counter)
 
 (define counter
-    (let ([count 0])
-      (λ ()
-        (begin0
-          count
-          (set! count (+ count 1))))))
+  (let ([count 0])
+    (λ ()
+      (begin0
+        count
+        (set! count (+ count 1))))))
 
 #| Older implementation by creating closure inside a lambda
 (define counter
