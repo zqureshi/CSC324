@@ -1,4 +1,4 @@
-#lang scheme
+#lang racket
 
 #| Q2. [1.5 hrs]
 
@@ -25,6 +25,23 @@
    Do not define any global variables (except counter of course). |#
 #;
 (provide counter)
+
+(define counter
+    (let ([count 0])
+      (λ ()
+        (begin0
+          count
+          (set! count (+ count 1))))))
+
+#| Older implementation by creating closure inside a lambda
+(define counter
+  ((λ ()
+     (define count 0)
+     (λ ()
+       (begin0 
+         count
+         (set! count (+ count 1))))))) |#
+
 #;
 (list (counter) (counter) (counter) (counter)) ;=> (0 1 2 3]
 
