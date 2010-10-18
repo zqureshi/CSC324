@@ -23,7 +23,7 @@
 #| (a) [10 min]
    Write counter.
    Do not define any global variables (except counter of course). |#
-#;
+
 (provide counter)
 
 (define counter
@@ -35,12 +35,11 @@
 
 #| Older implementation by creating closure inside a lambda
 (define counter
-  ((λ ()
-     (define count 0)
+  ((λ (count)
      (λ ()
        (begin0 
          count
-         (set! count (+ count 1))))))) |#
+         (set! count (+ count 1))))) 0)) |#
 
 #;
 (list (counter) (counter) (counter) (counter)) ;=> (0 1 2 3]
@@ -50,7 +49,7 @@
    Write mark, taking a symbol, returning the symbol with a number 'appended'.
    The number must be different each time mark is called.
    Use: string-append, symbol->string (and you can guess the rest). |#
-#;
+
 (provide mark)
 
 (define (mark sym)
@@ -60,8 +59,16 @@
 #| (c) [10 min]
    Write first-such-that, taking a unary predicate and list, returning the first
     element for which the predicate is true, or false if there's no such element. |#
-#;
+
 (provide first-such-that)
+
+(define (first-such-that pred l)
+  (if (empty? l)
+      #f
+      ((λ (e) ; lulzy alternative to let
+         (if (pred e)
+             e
+             (first-such-that pred (rest l)))) (first l))))
 
 #| (d) [60 min]
 
