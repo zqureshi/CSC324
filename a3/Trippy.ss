@@ -1,5 +1,6 @@
 #lang racket
 
+#;
 (provide such-that stopovers)
 
 #| Q3. [1 hour]
@@ -12,9 +13,10 @@
    Do not write any first-rest recursion.
    Instead creatively use map, apply and append, but no other
     higher-order functions nor linear built-in list functions. |#
-#;
-(define (such-that _ _)
-  _)
+
+(define (such-that pred? l)
+  (apply append (map (λ (e) (if (pred? e) (list e) '())) l)))
+
 
 #| (b) [30 min]
    Suppose you work at an airport, and someone asks you for the
