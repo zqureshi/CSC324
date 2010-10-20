@@ -65,3 +65,21 @@
  
    Don't write any first-rest list recursion.
    The only efficiency required is termination. |#
+
+(define (stopovers airports start goal (referrers '()))
+  (let* ([serviced (assoc start airports)]
+         [serviced (if serviced (rest serviced) '())]
+         [non-referrers (such-that (λ (e) (if (member e referrers) #f #t)) serviced)])
+    (cond [(equal? start goal) 0]
+          [(empty? non-referrers) #f]
+          [else 
+           (let ([hops (such-that 
+                        (λ (e) e)
+                        (map 
+                         (λ (e) (stopovers airports e goal (cons e referrers))) 
+                         non-referrers))])
+             (if (empty? hops) #f
+                 (+ 1
+                    (foldl (λ (e acc) (if (< e acc) e acc))
+                           (first hops)
+                           hops))))])))
