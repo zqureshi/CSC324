@@ -1,6 +1,6 @@
 #lang racket
 
-#;
+
 (provide such-that stopovers)
 
 #| Q3. [1 hour]
@@ -52,7 +52,7 @@ Calls up all the airports serviced by the current one except if they are a refer
 (define question
   (λ (dest referrers)
     (minimum-of-list+1-else-false
-     (map (if-not-referrer-then-call-wth-dest) (list-of-serviced-airports)))))
+     (map if-not-referrer-then-call-wth-dest list-of-serviced-airports))))
 
 #| Model an airport as a list of airport name followed by names of airports
     immediately serviced from it. |#
@@ -86,7 +86,4 @@ Calls up all the airports serviced by the current one except if they are a refer
                          (λ (e) (stopovers airports e goal (cons e referrers))) 
                          non-referrers))])
              (if (empty? hops) #f
-                 (+ 1
-                    (foldl (λ (e acc) (if (< e acc) e acc))
-                           (first hops)
-                           hops))))])))
+                 (+ 1 (apply min hops))))])))
