@@ -153,6 +153,13 @@
 #;
 (provide sexp-combine)
 
+(define (sexp-combine combiner sexp)
+  (if (list? sexp)
+      (combiner (map (fix-1st sexp-combine combiner) sexp))
+      (combiner sexp)))
+
+#| (sexp-combine (λ (e) (if (list? e) (apply + e) e)) '(1 2 3 (4 5 6) 7)) => 28 |#
+
 #| (e) [45 min]
 
   Write substitute taking a list of 'true' Propositional Variables, and a PF,
