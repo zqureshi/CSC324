@@ -44,7 +44,9 @@
     --- which of course is not even close to what we're doing) |#
 
 #| Function takes in a destination airport (dest) and a list of referrers who are on hold
- and returns the minimum number of stop to an airport, else #f. |#
+ and returns the minimum number of stop to an airport, else #f. 
+
+Calls up all the airports serviced by the current one except if they are a referrer |#
 
 #;
 (define question
