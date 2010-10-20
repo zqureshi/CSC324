@@ -42,10 +42,15 @@
    Document what the question returns, in terms of the parameters
    (e.g. "returns whether the square of 'side' is less than 'max-area'"
     --- which of course is not even close to what we're doing) |#
+
+#| Function takes in a destination airport (dest) and a list of referrers who are on hold
+ and returns the minimum number of stop to an airport, else #f. |#
+
 #;
 (define question
-  (λ (_ ...)
-    _))
+  (λ (dest referrers)
+    (minimum-of-list+1-else-false
+     (map (if-not-referrer-then-call-wth-dest) (list-of-serviced-airports)))))
 
 #| Model an airport as a list of airport name followed by names of airports
     immediately serviced from it. |#
@@ -65,3 +70,8 @@
  
    Don't write any first-rest list recursion.
    The only efficiency required is termination. |#
+
+(define (stopovers airports start goal (referrers '()))
+  (let* ([serviced (assoc start airports)]
+         [serviced (if serviced serviced '())])
+    serviced))
