@@ -2,6 +2,7 @@
 
 (provide caching fibonacci)
 
+#;
 (define (fibonacci x)
   (if (x . <= . 1) x
       (+ (fibonacci (- x 1)) (fibonacci (- x 2)))))
@@ -15,5 +16,8 @@
           val))))
 
 ; The caching version of fibonacci
-(define fib-caching 
-    (caching fibonacci))
+(define fibonacci
+  (caching
+   (λ (n)
+     (if (n . <= . 1) n
+         (+ (fibonacci (- n 1)) (fibonacci (- n 2))))))) 
