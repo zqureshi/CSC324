@@ -177,7 +177,7 @@
   Write scheme-bind, taking a list of 'true' Propositional Variables,
    a list of the rest ('false' ones), and a fix'd PF, returning Scheme code
    that binds the variables to true/false, and evaluates the PF. |#
-#;
+
 (provide substitute fix scheme-bind)
 
 (define (substitute true-vars pf)
@@ -197,3 +197,8 @@
        [`(not ,x) `(not ,x)]
        [sym sym]))
    pf))
+
+(define (scheme-bind true-vars false-vars pf)
+  `(let 
+     ,(append (map (λ (v) `(,v #t)) true-vars) (map (λ (v) `(,v #f)) false-vars))
+     ,pf))
