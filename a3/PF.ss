@@ -150,7 +150,7 @@
   Write sexp-combine taking a combiner and an sexp, primitively recursing,
    using the combiner on the leaves, and on the lists of results. |#
 
-#;
+
 (provide sexp-combine)
 
 (define (sexp-combine combiner sexp)
@@ -179,3 +179,12 @@
    that binds the variables to true/false, and evaluates the PF. |#
 #;
 (provide substitute fix scheme-bind)
+
+(define (substitute true-vars pf)
+  (sexp-combine 
+   (λ (e)
+     (cond [(list? e) e]
+           [(ormap (fix-1st equal? e) '(and or not)) e]
+           [(member e true-vars) 'true]
+           [else 'false]))
+   pf))
