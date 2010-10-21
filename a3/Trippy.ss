@@ -1,6 +1,5 @@
 #lang racket
 
-
 (provide such-that stopovers)
 
 #| Q3. [1 hour]

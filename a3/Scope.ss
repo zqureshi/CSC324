@@ -53,7 +53,7 @@
 (provide mark)
 
 (define (mark sym)
-  `,(string-append (symbol->string sym) (number->string (counter))))
+ (string->symbol (string-append (symbol->string sym) (number->string (counter)))))
 
 
 #| (c) [10 min]
@@ -87,3 +87,13 @@
     marked name name for the variable --- assume there is one. |#
 #;
 (provide mark-scope lookup)
+
+(define (lookup var env)
+  (cdr (first-such-that (λ (e) (equal? (car e) var)) env)))
+
+(define (mark-scope code (env '()))
+  (match code
+    [`(,(and (or 'lambda 'λ) lambda/λ) (,x) ,body) (let ([marked (mark x)])
+                            `(,lambda/λ (,marked) ,(mark-scope body (cons (cons x marked) env))))]
+    [(? number?) code]
+    [sym (begin (displayln sym) `,(lookup sym env))]))
