@@ -53,7 +53,7 @@
 (provide mark)
 
 (define (mark sym)
- (string->symbol (string-append (symbol->string sym) (number->string (counter)))))
+  (string->symbol (string-append (symbol->string sym) (number->string (counter)))))
 
 
 #| (c) [10 min]
@@ -89,11 +89,24 @@
 (provide mark-scope lookup)
 
 (define (lookup var env)
-  (cdr (first-such-that (λ (e) (equal? (car e) var)) env)))
+  (let ([looked (first-such-that (λ (e) (equal? (car e) var)) env)])
+    (if looked
+        (cdr looked)
+        var))) ; return var if not found in env
 
 (define (mark-scope code (env '()))
   (match code
-    [`(,(and (or 'lambda 'λ) lambda/λ) (,x) ,body) (let ([marked (mark x)])
-                            `(,lambda/λ (,marked) ,(mark-scope body (cons (cons x marked) env))))]
+    [`(,(and (or 'lambda 'λ) lambda/λ) (,x) ,body) 
+     (let ([marked (mark x)])
+       `(,lambda/λ (,marked) ,(mark-scope body (cons (cons x marked) env))))]
+    [`(let ((,x ,init)) ,body) 
+     (let ([marked (mark x)])
+       `(let (,marked ,(mark-scope init env)) ,(mark-scope body (cons (cons x marked) env))))]
+    [`(letrec ((,x ,init)) ,body) 
+     (let* ([marked (mark x)]
+            [env (cons (cons x marked) env)])
+       `(letrec ((,marked ,(mark-scope init env)))
+          ,(mark-scope body env)))]
+    [`(,func ,args ...) (map (λ (e) (mark-scope e env)) code)]
     [(? number?) code]
-    [sym (begin (displayln sym) `,(lookup sym env))]))
+    [sym (lookup sym env)]))
