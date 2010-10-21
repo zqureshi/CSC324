@@ -122,7 +122,7 @@
 
 (define (sexp-prepare-reconstruct func sexp)
   ((only-if list? 
-     (fix-1st map (fix-1st sexp-prepare-reconstruct func)))
+            (fix-1st map (fix-1st sexp-prepare-reconstruct func)))
    (func sexp)))
 
 #| More verbose form
@@ -187,4 +187,13 @@
            [(ormap (fix-1st equal? e) '(and or not)) e]
            [(member e true-vars) 'true]
            [else 'false]))
+   pf))
+
+(define (fix pf)
+  (sexp-combine
+   (λ (e)
+     (match e
+       [`(,x ,and/or ,y) `(,and/or ,x ,y)]
+       [`(not ,x) `(not ,x)]
+       [sym sym]))
    pf))
