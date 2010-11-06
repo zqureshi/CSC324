@@ -30,12 +30,14 @@
 
    E.g. |#
 
+#;
 (define (Class var-val func)
   (λ ()
     (let ([ht (make-hasheq (list (apply cons var-val)))])
       (λ ()
         (func ht)))))
 
+#;
 (define Counter
   (Class '(count -1)
          (λ (my)
@@ -69,13 +71,22 @@
   Use a hasheq table to store and look up the methods; does each instance need its own (yet)?
 
   E.g. |#
-#;
+
+(define (Class vars . funcs)
+  (λ ()
+    (let ([ht (make-hash (map (λ (e) (apply cons e)) vars))]
+          [ft (make-hash (map (λ (e) (apply cons e)) funcs))])
+      (λ (func-name)
+        ((hash-ref ft func-name) ht)))))
+
+
 (define Counter
   (Class '((count -1) (step 1)) 
          `(count! ,(λ (my)
                      (hash-update! my 'count (λ (c) (+ c (hash-ref my 'step))))
                      (hash-ref my 'count)))
          `(step-up! ,(λ (my) (hash-update! my 'step add1)))))
+
 #|
 (define o1 (Counter))
 (o1 'count!) ; => 0
