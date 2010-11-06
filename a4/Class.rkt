@@ -29,12 +29,19 @@
     'on' the thunk's copy of the instance variable.
 
    E.g. |#
-#;
+
+(define (Class var-val func)
+  (λ ()
+    (let ([ht (make-hasheq (list (apply cons var-val)))])
+      (λ ()
+        (func ht)))))
+
 (define Counter
   (Class '(count -1)
          (λ (my)
            (hash-update! my 'count add1)
            (hash-ref my 'count))))
+
 #|
 (define o1 (Counter))
 (o1) ; => 0
@@ -42,7 +49,7 @@
 (define o2 (Counter))
 (o2) ; => 0
 (o1) ; => 2
-(o2)) ; => 1
+(o2) ; => 1
 |#
 
 
