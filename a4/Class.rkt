@@ -107,7 +107,7 @@
 
    E.g. |#
 
-
+#;
 (define (Class vars . funcs)
   (λ ()
     (let* ([ht (make-hash (map (λ (e) (apply cons e)) vars))]
@@ -119,7 +119,7 @@
       (λ (func-name)
         ((hash-ref ft func-name) getter/setter)))))
 
-
+#;
 (define Counter
   (Class '((count -1) (step 1)) 
          'count!   (λ (my)
@@ -134,7 +134,19 @@
    Modify Class so that methods can take arguments.
 
    E.g. |#
-#;
+
+(define (Class vars . funcs)
+  (λ ()
+    (let* ([ht (make-hash (map (λ (e) (apply cons e)) vars))]
+           [ft (make-hash (map cons (filter symbol? funcs) (filter procedure? funcs)))]
+           [getter/setter (λ id 
+                            (match id
+                              [`(,var ,val) (hash-set! ht var val)] 
+                              [`(,var) (hash-ref ht var)]))])
+      (λ (func-name . args)
+        (apply (hash-ref ft func-name) getter/setter args)))))
+
+
 (define Stack
   (Class '((stack ()))
          'empty? (λ (my) (empty? (my 'stack)))
