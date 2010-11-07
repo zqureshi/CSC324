@@ -110,12 +110,12 @@
 
 (define (Class vars . funcs)
   (λ ()
-    (let ([ht (make-hash (map (λ (e) (apply cons e)) vars))]
-          [ft (make-hash (map cons (filter symbol? funcs) (filter procedure? funcs)))])
-      (define (getter/setter . id)
-        (match id
-          [`(,var ,val) (hash-set! ht var val)]
-          [`(,var) (hash-ref ht var)]))
+    (let* ([ht (make-hash (map (λ (e) (apply cons e)) vars))]
+           [ft (make-hash (map cons (filter symbol? funcs) (filter procedure? funcs)))]
+           [getter/setter (λ id 
+                            (match id
+                              [`(,var ,val) (hash-set! ht var val)] 
+                              [`(,var) (hash-ref ht var)]))])
       (λ (func-name)
         ((hash-ref ft func-name) getter/setter)))))
 
