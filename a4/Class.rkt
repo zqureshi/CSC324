@@ -134,7 +134,7 @@
    Modify Class so that methods can take arguments.
 
    E.g. |#
-
+#;
 (define (Class vars . funcs)
   (λ ()
     (let* ([ht (make-hash (map (λ (e) (apply cons e)) vars))]
@@ -146,7 +146,7 @@
       (λ (func-name . args)
         (apply (hash-ref ft func-name) getter/setter args)))))
 
-
+#;
 (define Stack
   (Class '((stack ()))
          'empty? (λ (my) (empty? (my 'stack)))
@@ -165,7 +165,28 @@
     Instance variable access takes precedence over method name access, when the names clash.
 
    E.g. |#
-#;
+
+(define (Class vars . funcs)
+  (λ ()
+    (letrec ([ht (make-hash (map (λ (e) (apply cons e)) vars))]
+             [ft (make-hash (map cons (filter symbol? funcs) (filter procedure? funcs)))]
+             [getter/setter (λ id 
+                              (match id
+                                [`(,var ,val) (cond
+                                                [(hash-has-key? ht var) (hash-set! ht var val)]
+                                                [(hash-has-key? ft var) (apply (hash-ref ft var) 
+                                                                               getter/setter
+                                                                               (if (list? val)
+                                                                                   val
+                                                                                   (list val)))]
+                                                [else (hash-set! ht var val)])] 
+                                [`(,var) (if (hash-has-key? ht var)
+                                             (hash-ref ht var)
+                                             ((hash-ref ft var) getter/setter))]))])
+      (λ (func-name . args)
+        (apply (hash-ref ft func-name) getter/setter args)))))
+
+
 (define Stack
   (Class '((stack ()))
          'empty? (λ (my) (empty? (my 'stack)))
