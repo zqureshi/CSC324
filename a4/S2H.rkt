@@ -1,6 +1,16 @@
 #lang racket
 
-; worked in group with zeeshan qureshi
+#|
+CSC 324 Fall 2010
+Assignment 4
+
+Group:
+Zeeshan Qureshi <g0zee@cdf.toronto.edu>
+Aditya Mishra <c9mishra@cdf.toronto.edu>
+
+Late Day Usage:
+1 from g0zee and 1 from c9mishra
+|#
 
 #| Question 2
 
