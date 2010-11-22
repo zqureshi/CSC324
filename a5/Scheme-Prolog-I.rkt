@@ -87,6 +87,9 @@
 
 #;(provide len-predicate)
 #| Write 'len-predicate', refactoring your len-cut to use define-predicate. |#
+(define-predicate (len-predicate l)
+  ((empty? l) (begin (!) 0))
+  ((begin (!) (add1 (len-predicate (rest l))))))
 
 
 #;(provide match-assert)
@@ -97,12 +100,24 @@
 #| If none of the <pattern>s match <exp>, it skips the current branch.
    Otherwise, for the first matching <pattern> it treats the match result like a
     define-predicate clause. |#
+(define-syntax-rule 
+  (match-assert <exp>
+                (<pattern> <assertion> ... <result>)
+                ...)
+  (match <exp>
+    [<pattern> (begin (assert <assertion>)
+                      ...
+                      <result>)]
+    ...
+    [_ (?)]))
 
 
 #;(provide len-match)
 #| Write 'len-match', refactoring len-cut to use one match-assert per clause,
     one pattern per match-assert, but no cut. |#
-
+(define (len-match l)
+  (-< (match-assert l (`() 0))
+      (match-assert l ((cons first rest) (add1 (len-match rest))))))
 
 #;(provide define-predicate-match)
 #| Write 'define-predicate-match' that captures the previous idiom in the form: |#
