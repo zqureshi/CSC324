@@ -161,6 +161,11 @@
   ((procedure? (cons first rest)) :- (func first))
   ((procedure? (cons first rest)) :- (P-map func rest)))
 
+(define-predicate-match (a-subsequence seq)
+  (`() :- '())
+  (`(,h . ,r) :- (cons h (a-subsequence r)))
+  (`(,h . ,r) :- (a-subsequence r)))
+
 #;(provide len-box)
 #| Write 'len-box' taking a list and a box, setting the box's value to the length of the list.
    Use define-predicate-match, primitive recursion, no helpers nor len-predicate-match. |#
