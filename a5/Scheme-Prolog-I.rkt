@@ -158,8 +158,8 @@
   ((cons first rest) :- (add1 (len-predicate-match rest))))
 
 (define-predicate-match (P-map func list)
-  ((procedure? (cons first rest)) :- (func first))
-  ((procedure? (cons first rest)) :- (P-map func rest)))
+  (((? procedure?) (cons first rest)) :- (func first))
+  (((? procedure?) (cons first rest)) :- (P-map func rest)))
 
 (define-predicate-match (a-subsequence seq)
   (`() :- '())
@@ -169,9 +169,9 @@
 #;(provide len-box)
 #| Write 'len-box' taking a list and a box, setting the box's value to the length of the list.
    Use define-predicate-match, primitive recursion, no helpers nor len-predicate-match. |#
-(define-predicate-match (len-box l b)
-  ((`() box?) :- (set-box! b 0))
-  ((`(,h . ,r) box?) :- (begin (len-box r b)
+#;(define-predicate-match (len-box l b)
+  ((`() (? box?)) :- (set-box! b 0))
+  ((`(,h . ,r) (? box?)) :- (begin (len-box r b)
                                (set-box! b (+ 1 (unbox b))))))
 
 
@@ -179,3 +179,7 @@
 #| Now do it accumulating, taking a list, an accumulator box and a result box.
    Assume the accumulator box starts off containing 0.
    Record the accumulated length in the result box only when the accumulation is done. |#
+(define-predicate-match (len-box-acc l acc res)
+  ((`() (box acc-val) (? box?)) :- (set-box! res acc-val))
+  ((`(,h . ,r) (box acc-val) (? box?)) :- (begin (set-box! acc (+ acc-val 1))
+                                    (len-box-acc r acc res))))
