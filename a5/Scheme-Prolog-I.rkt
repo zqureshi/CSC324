@@ -14,7 +14,7 @@
 #;
 (define (len-< l)
   (-< (cond [(empty? l) 0]
-            [(?)]) ; Skips this branch --- like 'continue' in looping.
+            [(?)]) ; Skips this branch --[- like 'continue' in looping.
       (cond [(not (empty? l)) ; '-<' isn't exclusive-or / if-else / cond.
              (add1 (len-< (rest l)))]
             [(?)])))
@@ -49,7 +49,10 @@
 (-<! 3 2 (begin (!) 236) 4 8 8) ; intended use if producing a value
 (?) (?) (?)
 |#
-
+(define (len-cut l)
+  (-<! (begin (assert (empty? l)) 
+              (!) 0)
+       (begin (!) (add1 (len-cut (rest l))))))
 
 #;(provide define-predicate)
 #| Next you make a syntactic form automatically inserting the -<!, begins and asserts.
