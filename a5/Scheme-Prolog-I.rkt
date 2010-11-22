@@ -147,15 +147,15 @@
      (define-cutable (<name> <arg> ...)
        (-< (match-assert (list <arg> ...) ((<arg-pattern> ...) <assertion> ... <result>)) ...))]))
 
-(define-predicate-match (pred-xyz x y z)
-  (`(,a ,b ,c) :- `(,a ,b ,c)))
-
 #;(provide len-predicate-match
          P-map
          a-subsequence)
 #| Write 'len-predicate-match' using define-predicate-match to refactor len-match.
    Also use define-predicate-match to write a P-map doing map (of unary),
     and a-subsequence (see lecture). |#
+(define-predicate-match (len-predicate-match l)
+  ('() :- 0)
+  ((cons first rest) :- (add1 (len-predicate-match rest))))
 
 
 #;(provide len-box)
