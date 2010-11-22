@@ -145,7 +145,7 @@
            ...))]
     [(define-predicate-match (<name> <arg> ...) ((<arg-pattern> ...) :- <assertion> ... <result>) ...)
      (define-cutable (<name> <arg> ...)
-       (-< (match-assert (list <arg> ...) ((<arg-pattern> ...) <assertion> ... <result>)) ...))]))
+       (-< (match-assert (list <arg> ...) ((list <arg-pattern> ...) <assertion> ... <result>)) ...))]))
 
 #;(provide len-predicate-match
          P-map
@@ -157,6 +157,9 @@
   ('() :- 0)
   ((cons first rest) :- (add1 (len-predicate-match rest))))
 
+(define-predicate-match (P-map func list)
+  ((procedure? (cons first rest)) :- (func first))
+  ((procedure? (cons first rest)) :- (P-map func rest)))
 
 #;(provide len-box)
 #| Write 'len-box' taking a list and a box, setting the box's value to the length of the list.
