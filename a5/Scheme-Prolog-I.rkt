@@ -9,7 +9,7 @@
      new operations -<! and define-cutable |#
 
 
-#;(provide assert)
+(provide assert)
 #| Recall from lecture the 'guarded -<' idiom for if-else: |#
 #;
 (define (len-< l)
@@ -28,7 +28,7 @@
 (define-syntax-rule (assert <e>)
   (unless <e> (?)))
 
-#;(provide len-assert)
+(provide len-assert)
 #| Write 'len-assert', returning the length of a list.
    Mimic the meaning of len-<, but refactor with begins and asserts, instead of cond. |#
 (define (len-assert l)
@@ -37,7 +37,7 @@
       (begin (assert (not (empty? l))) 
              (add1 (len-assert (rest l))))))
 
-#;(provide len-cut)
+(provide len-cut)
 #| Write 'len-cut', similarly to len-assert, but using '-<!' which is like:
      (cutable-with ! (-< _ ...))
     i.e. it always using the name '!' for cut.
@@ -54,7 +54,7 @@
               (!) 0)
        (begin (!) (add1 (len-cut (rest l))))))
 
-#;(provide define-predicate)
+(provide define-predicate)
 #| Next you make a syntactic form automatically inserting the -<!, begins and asserts.
    For subtle reasons (may be a bug in Racket, which ate up some hours), use
     define-cutable with just -<, instead of using -<!. |#
@@ -85,14 +85,14 @@
     ((not (empty? l)) (add1 (len-< (rest l)))))
 
 
-#;(provide len-predicate)
+(provide len-predicate)
 #| Write 'len-predicate', refactoring your len-cut to use define-predicate. |#
 (define-predicate (len-predicate l)
   ((empty? l) (begin (!) 0))
   ((begin (!) (add1 (len-predicate (rest l))))))
 
 
-#;(provide match-assert)
+(provide match-assert)
 #| Write 'match-assert' handling the following form: |#
 #;(match-assert <exp>
                 [<pattern> <assertion> ... <result>]
@@ -112,14 +112,14 @@
     [_ (?)]))
 
 
-#;(provide len-match)
+(provide len-match)
 #| Write 'len-match', refactoring len-cut to use one match-assert per clause,
     one pattern per match-assert, but no cut. |#
 (define (len-match l)
   (-< (match-assert l (`() 0))
       (match-assert l ((cons first rest) (add1 (len-match rest))))))
 
-#;(provide define-predicate-match)
+(provide define-predicate-match)
 #| Write 'define-predicate-match' that captures the previous idiom in the form: |#
 #;(define-predicate-match (<name> <arg>)
     (<arg-pattern> :- <assertion> ... <result>)
@@ -147,7 +147,7 @@
      (define-cutable (<name> <arg> ...)
        (-< (match-assert (list <arg> ...) ((list <arg-pattern> ...) <assertion> ... <result>)) ...))]))
 
-#;(provide len-predicate-match
+(provide len-predicate-match
          P-map
          a-subsequence)
 #| Write 'len-predicate-match' using define-predicate-match to refactor len-match.
@@ -166,16 +166,16 @@
   (`(,h . ,r) :- (cons h (a-subsequence r)))
   (`(,h . ,r) :- (a-subsequence r)))
 
-#;(provide len-box)
+(provide len-box)
 #| Write 'len-box' taking a list and a box, setting the box's value to the length of the list.
    Use define-predicate-match, primitive recursion, no helpers nor len-predicate-match. |#
-#;(define-predicate-match (len-box l b)
+(define-predicate-match (len-box l b)
   ((`() (? box?)) :- (set-box! b 0))
   ((`(,h . ,r) (? box?)) :- (begin (len-box r b)
                                (set-box! b (+ 1 (unbox b))))))
 
 
-#;(provide len-box-acc)
+(provide len-box-acc)
 #| Now do it accumulating, taking a list, an accumulator box and a result box.
    Assume the accumulator box starts off containing 0.
    Record the accumulated length in the result box only when the accumulation is done. |#
