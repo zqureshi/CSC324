@@ -1,7 +1,7 @@
 #lang racket
 
 #| Modified version of backtrack.rkt. |#
-(require "A5-backtrack.rkt")
+(require "A5-backtrack.1.rkt")
 #| Just displays "No." instead of aborting.
    Can call thunk 'No.', i.e. say (No.), to skip all waiting branches.
    And explained below:
@@ -11,6 +11,7 @@
 
 #;(provide assert)
 #| Recall from lecture the 'guarded -<' idiom for if-else: |#
+#;
 (define (len-< l)
   (-< (cond [(empty? l) 0]
             [(?)]) ; Skips this branch --- like 'continue' in looping.
@@ -18,12 +19,14 @@
              (add1 (len-< (rest l)))]
             [(?)])))
 
-(len-< '(3 2 4 8 8))
-(?)
+#;(len-< '(3 2 4 8 8))
+#;(?)
 #| Write a syntactic-form 'assert', taking an expression,
     then skipping the current branch if the expression is false.
    Make the body as nice as possible, much nicer than:
      "if expression is false then skip else void". |#
+(define-syntax-rule (assert <e>)
+  (unless <e> (?)))
 
 #;(provide len-assert)
 #| Write 'len-assert', returning the length of a list.
@@ -36,10 +39,12 @@
     i.e. it always using the name '!' for cut.
    But unlike lecture's cutable-with, the cut is just a thunk.
    Use these to remove at least one guard. |#
+#|
 (-<! 3 2 (!) 4 8 8) ; cut is a thunk now, returns '! so you notice use
 (?) (?) (?)
 (-<! 3 2 (begin (!) 236) 4 8 8) ; intended use if producing a value
 (?) (?) (?)
+|#
 
 
 #;(provide define-predicate)
