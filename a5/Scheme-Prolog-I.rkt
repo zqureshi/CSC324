@@ -68,10 +68,21 @@
 #;(define-predicate (<name> <arg> ...)
     (<assertion> ... <result>)
     ...)
+
+(define-syntax-rule 
+  (define-predicate (<name> <arg> ...) 
+    (<assertion> ... <result>)
+    ...)
+  (define-cutable (<name> <arg> ...)
+    (-< (begin (assert <assertion>) 
+               ... 
+               <result>) 
+        ...)))
+
 ; The first example len-<, using this:
 #;(define-predicate (len-< l)
     ((empty? l) 0)
-    ((not (empty? l)) (add1 (len (rest l)))))
+    ((not (empty? l)) (add1 (len-< (rest l)))))
 
 
 #;(provide len-predicate)
