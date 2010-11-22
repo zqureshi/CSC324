@@ -137,6 +137,12 @@
     Not having to make the patterns into a list-of pattern is simpler for the *user*.
    The unary special case is also for simpler use. |#
 
+(define-syntax define-predicate-match
+  (syntax-rules (:-)
+    [(define-predicate-match (<name> <arg>) (<arg-pattern> :- <assertion> ... <result>) ...)
+     (define-cutable (<name> <arg>)
+       (-< (match-assert <arg> (<arg-pattern> <assertion> ... <result>))
+           ...))]))
 
 #;(provide len-predicate-match
          P-map
