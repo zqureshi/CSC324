@@ -142,7 +142,13 @@
     [(define-predicate-match (<name> <arg>) (<arg-pattern> :- <assertion> ... <result>) ...)
      (define-cutable (<name> <arg>)
        (-< (match-assert <arg> (<arg-pattern> <assertion> ... <result>))
-           ...))]))
+           ...))]
+    [(define-predicate-match (<name> <arg> ...) ((<arg-pattern> ...) :- <assertion> ... <result>) ...)
+     (define-cutable (<name> <arg> ...)
+       (-< (match-assert (list <arg> ...) ((<arg-pattern> ...) <assertion> ... <result>)) ...))]))
+
+(define-predicate-match (pred-xyz x y z)
+  (`(,a ,b ,c) :- `(,a ,b ,c)))
 
 #;(provide len-predicate-match
          P-map
