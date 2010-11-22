@@ -31,7 +31,11 @@
 #;(provide len-assert)
 #| Write 'len-assert', returning the length of a list.
    Mimic the meaning of len-<, but refactor with begins and asserts, instead of cond. |#
-
+(define (len-assert l)
+  (-< (begin (assert (empty? l)) 
+             0)
+      (begin (assert (not (empty? l))) 
+             (add1 (len-assert (rest l))))))
 
 #;(provide len-cut)
 #| Write 'len-cut', similarly to len-assert, but using '-<!' which is like:
