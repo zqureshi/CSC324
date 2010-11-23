@@ -119,7 +119,12 @@
 
    Implement it "tail" recursively: all work on the way in.
     I.e. any recursion must be last in the body's control flow. |#
-#;(define-predicate-match (sumList l S) _)
+(define-predicate-match (sumList l S)
+    (((and (? list?) l) S) :- (begin
+                                (define-predicate-match (sumList-w/acc l S acc)
+                                  ((`() S acc) :- (?= S acc))
+                                  ((`(,h . ,r) S acc) :- (sumList-w/acc r S (+ acc 1))))
+                                (sumList-w/acc l S 0))))
 
 #;(provide sumListA)
 #| Implement sumList again, tail recursively again, but treating logic variables
