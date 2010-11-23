@@ -93,7 +93,9 @@
 
 #;(provide in)
 #| Write 'in' taking a value or logic variable, and a list. |#
-#;(define-predicate-match (in X l) _)
+(define-predicate-match (in X l)
+  ((x `(,h . ,r)) :- (assert (?= x h)))
+  ((x `(,h . ,r)) :- (in x r)))
 #| For a value or instantiated logic variable: succeed once for each time
      the value or variable's value occurs in the list.
    For uninstantiated logic variable, repeatedly instantiate it to elements
