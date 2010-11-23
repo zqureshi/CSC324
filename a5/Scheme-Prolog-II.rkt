@@ -85,7 +85,10 @@
     Otherwise succeed iff the logic variable's value and the other value,
      or the two values, are equal.
    Use the (VAR <value>) pattern in the implementation. |#
-#;(define-predicate-match (?= A b) _)
+(define-predicate-match (?= A b)
+  (((VAR val-a) val-b) :- (assert (void? val-a)) (set-VAR-value! A val-b))
+  (((VAR val-a) val-b) :- (assert (not (void? val-a))) (eq? val-a val-b))
+  ((val-a val-b) :- (eq? val-a val-b)))
 
 
 #;(provide in)
