@@ -51,7 +51,11 @@
    Write test2 to produce the change that test1 produces,
     but in order from least to most number of coins. |#
 #;(define (test1) _)
-#;(define-predicate-match (range s e) _)
+
+(define-predicate-match (range s e)
+  ((s e) :- (assert (<= s e)) s)
+  ((s e) :- (assert (<= s e)) (range (+ s 1) e)))
+
 #;(define (test2) _)
 
 
