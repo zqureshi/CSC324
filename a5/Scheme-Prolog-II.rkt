@@ -3,7 +3,7 @@
 #| Predicate programming. 
    Logic variables. |#
 
-(require (only-in "A5-backtrack.rkt"
+(require (only-in "A5-backtrack.1.rkt"
                   ? ?- ?* No.)
          (only-in "Scheme-Prolog-I.rkt" 
                   define-predicate-match assert))
@@ -32,7 +32,11 @@
     summing to the given positive number, with lists using more of larger
     coins produced earlier.
    Hint: make a helper (also via define-predicate-match). |#
-#;(define-predicate-match (coin) _)
+(define-predicate-match (coin)
+  (() :- 25)
+  (() :- 10)
+  (() :- 5)
+  (() :- 1))
 #;(define-predicate-match (coin-bounded b) _)
 #;(define-predicate-match (make-change n) _)
 
