@@ -37,7 +37,11 @@
   (() :- 10)
   (() :- 5)
   (() :- 1))
-#;(define-predicate-match (coin-bounded b) _)
+
+(define-predicate-match (coin-bounded b)
+  (bound :- (let ([curr-coin (coin)])
+              (assert (<= curr-coin bound))
+              curr-coin)))
 #;(define-predicate-match (make-change n) _)
 
 #;(provide test1 range test2)
