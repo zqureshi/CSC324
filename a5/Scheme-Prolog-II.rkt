@@ -42,7 +42,12 @@
   (bound :- (let ([curr-coin (coin)])
               (assert (<= curr-coin bound))
               curr-coin)))
-#;(define-predicate-match (make-change n) _)
+
+(define-predicate-match (make-change n)
+  (n :- (assert (<= n 0)) '())
+  (n :- (assert (> n 0)) (let ([curr-coin (coin-bounded n)])
+                           #;(cons curr-coin (make-change (- n curr-coin)))
+                           (sort (cons curr-coin (make-change (- n curr-coin))) >))))
 
 #;(provide test1 range test2)
 #| Write test1 to produce all change for 57 with at most 10 coins.
