@@ -130,7 +130,11 @@
 #| Implement sumList again, tail recursively again, but treating logic variables
     as immutable once instantiated.
    Assume sumListA will be called with a logic variable instantiated to 0. |#
-#;(define-predicate-match (sumListA l A S) _)
+(define-predicate-match (sumListA l A S)
+  ((`() (VAR a) S) :- (?= S a))
+  ((`(,h . ,r) (VAR a) S) :- (let ([V (VAR)])
+                              (V (+ a 1))
+                              (sumListA r V S))))
 #;(let ([A (VAR)]
         [S (VAR)])
     (?= A 0)
