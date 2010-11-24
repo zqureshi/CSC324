@@ -21,3 +21,15 @@
       (apply append 
              (map (lambda (x) (insert-at-all (first l) '() x))
                   (rearrangements (rest l))))))
+
+; Alternate implementation of rearrangements using consAll
+(define (consAll e l)
+  (map (λ (sub-list) (cons e sub-list))
+       l))
+
+(define (permutations l)
+  (if (empty? l) '(())
+      (apply append
+             (map (λ (e)
+                    (consAll e (permutations (remove e l))))
+                  l))))
