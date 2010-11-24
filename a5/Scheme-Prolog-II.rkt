@@ -44,10 +44,13 @@
               curr-coin)))
 
 (define-predicate-match (make-change n)
-  (n :- (assert (<= n 0)) '())
-  (n :- (assert (> n 0)) (let ([curr-coin (coin-bounded n)])
-                           #;(cons curr-coin (make-change (- n curr-coin)))
-                           (sort (cons curr-coin (make-change (- n curr-coin))) >))))
+  (n :- (let ([max-coin (begin0 (coin) (!))])
+          (define-predicate-match (make-change-dec prev n)
+            ((prev n) :- (assert (<= n 0)) '())
+            ((prev n) :- (assert (> n 0)) (let ([curr-coin (coin-bounded n)])
+                                            (assert (<= curr-coin prev))
+                                            (cons curr-coin (make-change-dec curr-coin (- n curr-coin))))))
+          (make-change-dec max-coin n))))
 
 #;(provide test1 range test2)
 #| Write test1 to produce all change for 57 with at most 10 coins.
@@ -55,7 +58,11 @@
     of the numbers start, start+1, start+2, ... <= end.
    Write test2 to produce the change that test1 produces,
     but in order from least to most number of coins. |#
-#;(define (test1) _)
+(define (test1)
+  (?- (let ([change (make-change 57)])
+        (when (<= (length change) 10)
+          (displayln change))
+        (?))))
 
 (define-predicate-match (range s e)
   ((s e) :- (assert (<= s e)) s)
