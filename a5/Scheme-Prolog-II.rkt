@@ -1,5 +1,17 @@
 #lang racket
 
+#|
+CSC 324 Fall 2010
+Assignment 5
+
+Group:
+Zeeshan Qureshi <g0zee@cdf.toronto.edu>
+Aditya Mishra <c9mishra@cdf.toronto.edu>
+
+Late Day Usage:
+1 from g0zee and 1 from c9mishra
+|#
+
 #| Predicate programming. 
    Logic variables. |#
 
@@ -68,7 +80,12 @@
   ((s e) :- (assert (<= s e)) s)
   ((s e) :- (assert (<= s e)) (range (+ s 1) e)))
 
-#;(define (test2) _)
+(define (test2)
+  (?- (let ([change-size (range 1 10)]
+            [change (make-change 57)])
+        (when (= (length change) change-size)
+          (displayln change))
+        (?))))
 
 
 (provide VAR)
