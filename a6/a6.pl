@@ -39,7 +39,7 @@ lastPrime([H | _], P) :- prime(H), P is H.
 sumOfPrimesSquared([H | T], SPS) :- prime(H), sumOfPrimesSquared(T, SSP),
                                     SPS is (SSP + (H * H)), !.
 sumOfPrimesSquared([_ | T], SPS) :- sumOfPrimesSquared(T, SPS).
-sumOfPrimesSquared([], 0) :- !.
+sumOfPrimesSquared([], 0).
 
 /* Question 4a */
 range(E, E, [E]) :- !.
@@ -60,3 +60,7 @@ primesSquared([], []) :- !.
 rev([], RL, RL).
 rev([H | T], RL, A) :- AN = [H | A], rev(T, RL, AN).
 rev(L, RL) :- rev(L, RL, []).
+
+/* Question 6a */
+backwards([_ | T], E) :- backwards(T, E).
+backwards([E | _], E).
