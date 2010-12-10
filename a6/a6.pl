@@ -69,3 +69,8 @@ backwards([E | _], E).
 runningSum([H | _], S, A) :- S is (A + H).
 runningSum([H | T], S, A) :- AN is (A + H), runningSum(T, S, AN).
 runningSum([H | T], S) :- runningSum([H | T], S, 0).
+
+/* Question 7 */
+subsequences([_ | T], S) :- subsequences(T, S).
+subsequences([H | T], S) :- subsequences(T, R), S = [H | R].
+subsequences([], []).
