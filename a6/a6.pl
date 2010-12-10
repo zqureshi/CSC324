@@ -45,10 +45,6 @@ range(E, E, L) :- L = [E], !.
 range(S, E, L) :- N is (S + 1), range(N, E, R), L = [S | R].
 
 /* Question 4b */
-listAppend([], L, Result) :- Result = L, !.
-listAppend([H | T], L, Result) :- listAppend(T, L, R), Result = [H | R].
-
-rangeAcc(E, E, L, A) :- listAppend(A, [E], L), !.
-rangeAcc(S, E, L, A) :- listAppend(A, [S], AN), N is (S + 1), rangeAcc(N, E, L, AN).
-
-rangeA(S, E, L) :- A = [], rangeAcc(S, E, L, A).
+rangeA(S, S, L, A) :- L = [S | A], !.
+rangeA(E, S, L, A) :- AN = [E | A], P is (E - 1), rangeA(P, S, L, AN).
+rangeA(S, E, L) :- A = [], rangeA(E, S, L, A).
