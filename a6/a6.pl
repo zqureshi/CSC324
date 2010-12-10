@@ -30,3 +30,12 @@ noDivisorFrom(P,D) :- M is P mod D, M > 0, D1 is D + 1, noDivisorFrom(P, D1).
 /* Question 3b */
 firstPrime([H | _], P) :- prime(H), P is H, !.
 firstPrime([_ | T], P) :- firstPrime(T, P).
+
+/* Question 3c */
+lastPrime([_ | T], P) :- lastPrime(T, P), !.
+lastPrime([H | _], P) :- prime(H), P is H.
+
+/* Question 3d */
+sumOfPrimesSquared([], SPS) :- SPS is 0, !.
+sumOfPrimesSquared([H | T], SPS) :- prime(H), sumOfPrimesSquared(T, SSP), SPS is (SSP + (H * H)), !.
+sumOfPrimesSquared([_ | T], SPS) :- sumOfPrimesSquared(T, SPS).
