@@ -39,3 +39,16 @@ lastPrime([H | _], P) :- prime(H), P is H.
 sumOfPrimesSquared([H | T], SPS) :- prime(H), sumOfPrimesSquared(T, SSP), SPS is (SSP + (H * H)), !.
 sumOfPrimesSquared([_ | T], SPS) :- sumOfPrimesSquared(T, SPS).
 sumOfPrimesSquared([], SPS) :- SPS is 0.
+
+/* Question 4a */
+range(E, E, L) :- L = [E], !.
+range(S, E, L) :- N is (S + 1), range(N, E, R), L = [S | R].
+
+/* Question 4b */
+listAppend([], L, Result) :- Result = L, !.
+listAppend([H | T], L, Result) :- listAppend(T, L, R), Result = [H | R].
+
+rangeAcc(E, E, L, A) :- listAppend(A, [E], L), !.
+rangeAcc(S, E, L, A) :- listAppend(A, [S], AN), N is (S + 1), rangeAcc(N, E, L, AN).
+
+rangeA(S, E, L) :- A = [], rangeAcc(S, E, L, A).
