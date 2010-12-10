@@ -1,0 +1,137 @@
+Assignment 6 : Core Prolog
+**************************
+Use swipl on CDF.
+Put the predicates in a file "a6.pl".
+
+Running it as, e.g,
+  rlwrap -a --history-filename='a6.history' swipl -s a6.pl
+ gives you a persistent command line history stored in file "a6.history",
+ accessible via up/down arrow in SWI Prolog.
+For more answers to a query, use ";"; to end the answers press Return/Enter.
+
+Do not use any built-in predicates except:
+ <Var> is <arithmetic-expression>
+   - but not: <Var> is <Var>
+ <Var/number> <= (or <, >=, >) <Var/number>
+ !
+   - but only for meaning, not efficiency
+ list patterns:
+   []
+   [<e0> ,<e> ...]
+   [<h0> ,<h> ... | <tail>]
+
+Use '_' for variables only mentioned once.
+
+Each question or part of question has a natural answer of 1-3 lines
+ (including ones with accumulating helper!).
+Understand the algorithm and control flow, which should be mostly review,
+ then translate to Prolog syntax.
+Trace.
+If you get stuck for more than 15-30min, come to office hours or email what
+ you've got (e.g. practice in Scheme as mentioned in Question 1).
+
+Question 1 Turn a simple value into an infinite stream, via tail recursion.
+==========
+Write natFrom(S, N) producing a stream of natural numbers N >= S.
+ Assume S is instantiated to a natural number, N is uninstantiated.
+
+Hints
+-----
+The recursive call to natFrom should be last.
+Arithmetic requires a new variable, instantiated with 'is'.
+Don't copy variable values: just use the variable multiple times.
+
+For this and the rest when stumped:
+  Write in Scheme: for streams print, for single values return.
+  Then use immutable boxes for (at least) result(s).
+  Then use define-predicate-match.
+These are valid exam questions, and the non-box non-branching versions
+ would be simple and quick (<= 10 minute) questions.
+
+Question 2 Manipulate a Stream.
+==========
+(a) Mapping.
+Write square(S) producing all squares S of natural numbers.
+Assume S is uninstantiated.
+Use natFrom to produce natural numbers. 
+
+(b) Filtering out a finite number of values.
+Write squareFrom(N, S) producing all squares S that are at least N.
+Assume N is instantiated to a natural number, S is uninstantiated.
+Use square.
+
+(c) Finding first.
+Write firstSquareFrom(N, S) producing the first square S that's at least N.
+Assume N is instantiated to a natural number, S is uninstantiated.
+Use squareFrom.
+
+Question 3 Turn a list into success/failure, or a simple value.
+==========
+(a) Succeed/Fail, Tail Recursive.
+Write sorted(L) succeeding iff L is in non-decreasing order.
+Assume L is an instantiated list of numbers.
+It must fail for the first two out of order elements, without examining the remainder.
+
+(b) First value; Tail recursive.
+Write firstPrime(L, P) producing the first prime P in L, else failing.
+Assume L is instantiated to a list of natural numbers, P is uninstantiated.
+It must not examine any elements after the first prime.
+
+Here's prime(P) that succeeds iff instantiated natural number P is prime:
+  prime(P) :- P >= 2, noDivisorFrom(P,2).
+  noDivisorFrom(P,P) :- !.
+  noDivisorFrom(P,D) :- M is P mod D, M > 0, D1 is D + 1, noDivisorFrom(P, D1).
+
+(c) Last value; Primitive recursive.
+Write lastPrime(L, P) producing the last prime P in L, else failing.
+Assume L is intantiated to a list of natural numbers, P is uninstantiated.
+It must not test any elements before the last prime.
+
+(d) Combine/Fold to simple value; Primitive.
+Write sumOfPrimesSquared(L, SPS) producing the sum of squares of primes in L as SSP.
+Assume L is instantiated to a list of natural numbers, SPS is uninstantiated.
+
+Question 4 Turn a simple value into a list.
+==========
+(a) Primitive.
+Write range(S, E, L) producing the list L of natural numbers from S to E inclusive.
+Assume S and E are instantiated to natural numbers, L is uninstantiated.
+It must be primitive recursive in the list building.
+Hint: a list building pattern for the 'return' value will build after the body.
+
+(b) Tail Accumulating.
+Write range again, call it rangeA, but tail recursively accumulating the result.
+Hint: make a helper.
+
+Question 5 Transforming a list.
+==========
+(a) Map and Filter.
+Write primesSquared(L, LPS) producing the list LPS of the squares of the primes in L.
+Assume L is instantiated to a list of natural numbers, LPS is uninstantiated.
+Hint: primitive recursion is simplest.
+
+(b) Tail Accumulating.
+Write rev(L,RL) producing the reverse RL of L, via tail recursively accumulating RL.
+Assume L is an instantiated list, RL is uninstantiated.
+
+Question 6 Turn a list into a stream.
+==========
+(a) Primitive.
+Write backwards(L,E) producing the elements E of L in reverse.
+Assume L is intantiated, E is uninstantiated.
+Do not use any helpers, including rev.
+
+(b) Tail Accumulating.
+Write runningSum(L,S) producing the running sums S of L.
+Assume L is instantiated to a list of numbers, S is uninstantiated.
+Do not create a list of running sums.
+
+Question 7 Branching Recursion : Primitive.
+==========
+Write subsequence(L,S) producing the subsequences S of L.
+Assume L is an instantiated list, S is uninstantiated.
+
+For the exam, do at least the Prolog questions from 2010S,
+ and 2010W (which I consider too rushed):
+
+  https://login.library.utoronto.ca/cgi-bin/go_log.pl?url=http://exams.library.utoronto.ca
