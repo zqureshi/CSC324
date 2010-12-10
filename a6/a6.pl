@@ -36,15 +36,27 @@ lastPrime([_ | T], P) :- lastPrime(T, P), !.
 lastPrime([H | _], P) :- prime(H), P is H.
 
 /* Question 3d */
-sumOfPrimesSquared([H | T], SPS) :- prime(H), sumOfPrimesSquared(T, SSP), SPS is (SSP + (H * H)), !.
+sumOfPrimesSquared([H | T], SPS) :- prime(H), sumOfPrimesSquared(T, SSP),
+                                    SPS is (SSP + (H * H)), !.
 sumOfPrimesSquared([_ | T], SPS) :- sumOfPrimesSquared(T, SPS).
-sumOfPrimesSquared([], SPS) :- SPS is 0.
+sumOfPrimesSquared([], 0) :- !.
 
 /* Question 4a */
-range(E, E, L) :- L = [E], !.
+range(E, E, [E]) :- !.
 range(S, E, L) :- N is (S + 1), range(N, E, R), L = [S | R].
 
 /* Question 4b */
-rangeA(S, S, L, A) :- L = [S | A], !.
+rangeA(S, S, [S | A], A) :- !.
 rangeA(E, S, L, A) :- AN = [E | A], P is (E - 1), rangeA(P, S, L, AN).
-rangeA(S, E, L) :- A = [], rangeA(E, S, L, A).
+rangeA(S, E, L) :- rangeA(E, S, L, []).
+
+/* Question 5a */
+primesSquared([H | T], LPS) :- prime(H), primesSquared(T, R),
+                               S is (H * H), LPS = [S | R], !.
+primesSquared([_ | T], LPS) :- primesSquared(T, LPS).
+primesSquared([], []) :- !.
+
+/* Question 5b */
+rev([], RL, RL).
+rev([H | T], RL, A) :- AN = [H | A], rev(T, RL, AN).
+rev(L, RL) :- rev(L, RL, []).
