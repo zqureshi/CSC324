@@ -1,3 +1,9 @@
+/* CSC 324 Fall 2010 - Assignment 6
+ *
+ * Zeeshan Qureshi <g0zee@cdf.toronto.edu>
+ * Aditya Mishra <c9mishra@cdf.toronto.edu>
+ */
+
 /* Question 1 */
 natFrom(S, N) :- N is (S + 1).
 natFrom(S, N) :- S1 is (S + 1), natFrom(S1, N).
