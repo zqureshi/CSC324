@@ -64,3 +64,8 @@ rev(L, RL) :- rev(L, RL, []).
 /* Question 6a */
 backwards([_ | T], E) :- backwards(T, E).
 backwards([E | _], E).
+
+/* Question 6b */
+runningSum([H | _], S, A) :- S is (A + H).
+runningSum([H | T], S, A) :- AN is (A + H), runningSum(T, S, AN).
+runningSum([H | T], S) :- runningSum([H | T], S, 0).
